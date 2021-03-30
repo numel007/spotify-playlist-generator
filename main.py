@@ -101,7 +101,20 @@ def get_playlist_song_uris():
 def delete_songs_in_playlist():
 
     song_uris = get_playlist_song_uris()
+    song_array = []
+
+    for uri in song_uris:
+        song_array.append({"uri": f"{uri}"})
+    
+    access_token = generate_access_token()
+    playlist_id = "6kbIK82rzYl7coLLjPcAtE" 
+    playlist_url = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
+    headers = {"Content-Type":"application/json", "Authorization":f"Bearer {access_token}"}
+    data = json.dumps({"tracks": song_array})
+
+    response = requests.delete(url=playlist_url, headers=headers, data=data)
+    print(response.content)
+    
 
 
-
-get_playlist_song_uris()
+delete_songs_in_playlist()
