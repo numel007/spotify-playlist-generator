@@ -9,6 +9,9 @@ CLIENT_ID = os.getenv('CLIENT_ID')
 CLIENT_SECRET = os.getenv('CLIENT_SECRET')
 REFRESH_TOKEN = os.getenv('REFRESH_TOKEN')
 
+# Get playlist id from spotify and insert below if not using this script's generated playlist
+playlist_id = ""
+
 def generate_access_token():
     """Generate new access token"""
 
@@ -81,6 +84,7 @@ def generate_playlist():
         )
     
 def get_playlist_song_uris():
+    """Returns a list of song uris in the target playlist"""
 
     song_uris = []
     access_token = generate_access_token()
@@ -99,6 +103,7 @@ def get_playlist_song_uris():
     
 
 def delete_songs_in_playlist():
+    """Calls get_playlist_song_uris and deletes songs from the target playlist"""
 
     song_uris = get_playlist_song_uris()
     song_array = []
@@ -112,9 +117,7 @@ def delete_songs_in_playlist():
     headers = {"Content-Type":"application/json", "Authorization":f"Bearer {access_token}"}
     data = json.dumps({"tracks": song_array})
 
-    response = requests.delete(url=playlist_url, headers=headers, data=data)
-    print(response.content)
-    
+    requests.delete(url=playlist_url, headers=headers, data=data)
 
 
 delete_songs_in_playlist()
