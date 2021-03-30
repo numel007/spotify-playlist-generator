@@ -53,7 +53,7 @@ def generate_playlist():
     url = f"https://api.spotify.com/v1/users/{USER_ID}/playlists"
     headers = {"Content-Type":"application/json", "Authorization":f"Bearer {access_token}"}
     data = json.dumps({
-        "name": "Nightly Generated Playlist v2",
+        "name": "Nightly Generated Playlist v3",
         "public": False
     })
 
@@ -80,5 +80,28 @@ def generate_playlist():
         headers=headers
         )
     
+def get_playlist_song_uris():
 
-generate_playlist()
+    song_uris = []
+    access_token = generate_access_token()
+    playlist_id = "6kbIK82rzYl7coLLjPcAtE" 
+    playlist_url = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
+    headers = {"Authorization":f"Bearer {access_token}"}
+
+    response = requests.get(url=playlist_url, headers=headers)
+    json_response = response.json()
+
+
+    for song in json_response['items']:
+        song_uris.append(song['track']['uri'])
+
+    return song_uris
+    
+
+def delete_songs_in_playlist():
+
+    song_uris = get_playlist_song_uris()
+
+
+
+get_playlist_song_uris()
